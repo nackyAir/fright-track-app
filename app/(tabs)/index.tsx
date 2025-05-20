@@ -1,11 +1,17 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { IconSymbol } from '@/components/ui/IconSymbol';
 
 export default function HomeScreen() {
+  const navigateToTrack = () => {
+    router.push('/(tabs)/track');
+  };
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -16,38 +22,52 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+        <ThemedText type="title">航空機追跡アプリ</ThemedText>
         <HelloWave />
       </ThemedView>
+
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
+        <ThemedText type="subtitle">リアルタイム航空機追跡</ThemedText>
         <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
+          このアプリでは、OpenSky NetworkのAPIを使用して、世界中の航空機の位置情報をリアルタイムで表示します。
+          地図上で航空機をタップすると、詳細情報を確認できます。
         </ThemedText>
       </ThemedView>
+
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
+        <ThemedText type="subtitle">主な機能</ThemedText>
+        <ThemedView style={styles.featureItem}>
+          <IconSymbol size={24} name="map.fill" color="#3366FF" />
+          <ThemedText style={styles.featureText}>
+            インタラクティブな地図上で航空機の位置を表示
+          </ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.featureItem}>
+          <IconSymbol size={24} name="info.circle.fill" color="#3366FF" />
+          <ThemedText style={styles.featureText}>
+            航空機の詳細情報（コールサイン、高度、速度など）を表示
+          </ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.featureItem}>
+          <IconSymbol size={24} name="arrow.clockwise" color="#3366FF" />
+          <ThemedText style={styles.featureText}>
+            10秒ごとに自動更新される最新データ
+          </ThemedText>
+        </ThemedView>
       </ThemedView>
+
+      <TouchableOpacity style={styles.trackButton} onPress={navigateToTrack}>
+        <ThemedView style={styles.buttonContent}>
+          <IconSymbol size={24} name="airplane" color="#FFFFFF" />
+          <ThemedText style={styles.buttonText}>航空機追跡を開始</ThemedText>
+        </ThemedView>
+      </TouchableOpacity>
+
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
+        <ThemedText type="subtitle">データについて</ThemedText>
         <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+          このアプリは、OpenSky NetworkのAPIを使用しています。表示されるデータは、ADS-B、Mode S、FLARM、MLATなどの技術を使用して収集された公開情報です。
+          データの更新頻度や精度は、OpenSky Networkのサービス状況によって異なる場合があります。
         </ThemedText>
       </ThemedView>
     </ParallaxScrollView>
@@ -62,7 +82,7 @@ const styles = StyleSheet.create({
   },
   stepContainer: {
     gap: 8,
-    marginBottom: 8,
+    marginBottom: 16,
   },
   reactLogo: {
     height: 178,
@@ -70,5 +90,31 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: 'absolute',
+  },
+  featureItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginVertical: 4,
+  },
+  featureText: {
+    flex: 1,
+  },
+  trackButton: {
+    backgroundColor: '#3366FF',
+    borderRadius: 12,
+    padding: 16,
+    marginVertical: 16,
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
